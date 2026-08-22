@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 import vue from '@vitejs/plugin-vue'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { build, createServer, type Rollup } from 'vite'
+import { build, createServer, type Plugin, type Rollup } from 'vite'
 import { createSSRApp } from 'vue'
 import { renderToString } from '@vue/server-renderer'
 import { describe, expect, it } from 'vitest'
@@ -50,6 +50,46 @@ describe('Vite integration', () => {
       )
       expect(html).toMatch(
         /<span data-source-location="react\/App\.tsx:\d+:\d+">hello<\/span>/,
+      )
+    } finally {
+      await server.close()
+    }
+  })
+
+  it('reads React locations before other pre transforms rewrite JSX', async () => {
+    const root = path.join(fixtures, 'react')
+    const rewriteBeforeLens: Plugin = {
+      name: 'rewrite-before-dom-source-lens',
+      enforce: 'pre',
+      transform(code, id) {
+        if (!id.endsWith('/App.tsx')) return
+        return `\n\n\n${code}`
+      },
+    }
+    const server = await createServer({
+      root,
+      appType: 'custom',
+      logLevel: 'silent',
+      server: { middlewareMode: true },
+      plugins: [
+        react(),
+        rewriteBeforeLens,
+        reactVitePlugin({ prefix: 'react/' }),
+      ],
+    })
+
+    try {
+      const module = await server.ssrLoadModule('/App.tsx')
+      const html = renderToStaticMarkup(createElement(module.default))
+
+      expect(html).toContain(
+        '<main data-source-location="react/App.tsx:9:5">',
+      )
+      expect(html).toContain(
+        '<strong data-source-location="react/App.tsx:4:10">child</strong>',
+      )
+      expect(html).toContain(
+        '<span data-source-location="react/App.tsx:11:7">hello</span>',
       )
     } finally {
       await server.close()

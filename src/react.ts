@@ -112,12 +112,21 @@ async function createReactVitePlugin(
     presets: [preset],
     sourceMap: true,
   })
+  const transform = babel.transform
 
+  // Capture original JSX locations before other pre transforms (for example,
+  // React Compiler) rewrite the file and replace its AST locations.
   return {
     ...babel,
     name: 'dom-source-lens:react',
     enforce: 'pre',
     apply: 'serve',
+    transform:
+      typeof transform === 'function'
+        ? { handler: transform, order: 'pre' }
+        : transform
+          ? { ...transform, order: 'pre' }
+          : undefined,
   } as Plugin
 }
 
