@@ -1,6 +1,6 @@
 {
   "name": "dom-source-lens",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Vite plugins that map rendered React and Vue DOM elements back to their source locations.",
   "keywords": [
     "vite",
