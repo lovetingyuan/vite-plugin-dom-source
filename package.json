@@ -44,7 +44,8 @@
     "test:watch": "vitest",
     "pack:check": "npm pack --dry-run",
     "check": "npm run typecheck && npm test && npm run build && npm run pack:check",
-    "prepublishOnly": "npm run check"
+    "prepublishOnly": "npm run check",
+    "release": "np"
   },
   "dependencies": {
     "@babel/core": "^8.0.1",
@@ -72,6 +73,7 @@
     "@vitejs/plugin-react": "^6.1.0",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/server-renderer": "^3.5.41",
+    "np": "^12.0.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tsdown": "^0.22.14",
