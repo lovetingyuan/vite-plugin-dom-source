@@ -1,0 +1,110 @@
+:root {
+  color: #172033;
+  background: #f5f7fb;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  color: white;
+  background: #42b883;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+main {
+  width: min(680px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 5rem 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 7vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.eyebrow {
+  color: #238a60;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.intro {
+  color: #526078;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+nav {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+nav a {
+  border: 1px solid #dfe5ef;
+  border-radius: 999px;
+  color: #526078;
+  text-decoration: none;
+}
+
+nav a span {
+  display: block;
+  padding: 0.6rem 1rem;
+}
+
+nav a.router-link-active {
+  border-color: #42b883;
+  color: #238a60;
+  background: #eefbf5;
+}
+
+.card,
+output {
+  display: block;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #dfe5ef;
+  border-radius: 1rem;
+  background: white;
+  box-shadow: 0 1rem 3rem rgb(23 32 51 / 8%);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+.card li + li {
+  margin-top: 0.5rem;
+}
+
+output span {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #526078;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+code {
+  color: #238a60;
+  overflow-wrap: anywhere;
+}

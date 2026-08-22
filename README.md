@@ -1,0 +1,103 @@
+# dom-source-lens
+
+Vite plugins that add a source location to rendered React and Vue 3 DOM elements during development.
+
+```html
+<button data-source-location="src/components/Button.tsx:12:5">
+```
+
+Locations are relative to the resolved Vite root, use `/` separators, and use one-based line and column numbers pointing at the opening `<`.
+
+## Requirements
+
+- Node.js 22.18 or newer on the Node 22 line, or Node.js 24.11 or newer
+- Vite 8
+- React 19 with `@vitejs/plugin-react` 6, or Vue 3.5 with `@vitejs/plugin-vue` 6
+
+## Install
+
+```sh
+npm install --save-dev dom-source-lens
+```
+
+## React
+
+```ts
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import { reactVitePlugin } from 'dom-source-lens'
+
+export default defineConfig({
+  plugins: [react(), reactVitePlugin()],
+})
+```
+
+The React plugin annotates lowercase JSX intrinsic elements, including HTML, SVG, and custom elements. Components and fragments are not annotated, so component props are never polluted.
+
+## Vue
+
+```ts
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+import { vueVitePlugin } from 'dom-source-lens'
+
+export default defineConfig({
+  plugins: [vue(), vueVitePlugin()],
+})
+```
+
+The Vue plugin supports inline SFC HTML templates and external HTML templates declared with `template src`. It follows `@vitejs/plugin-vue`'s `isCustomElement` option. Component, slot, template, Teleport, and other non-DOM nodes are skipped.
+
+Pug, Jade, other template preprocessors, and Vue JSX are intentionally not transformed.
+
+## Playground
+
+This repository includes minimal React Router and Vue Router Vite apps under
+`playground/`. Both apps import `dom-source-lens` through the local npm workspace
+and display the source location of whichever rendered element you click, even
+as you navigate between pages.
+
+```sh
+npm install
+npm run dev:react
+# or, in another terminal
+npm run dev:vue
+```
+
+React runs on `http://localhost:5173` and Vue runs on
+`http://localhost:5174`. The source attributes are available while the Vite
+development server is running; production builds intentionally omit them.
+
+## Options
+
+Both plugins accept the same options:
+
+```ts
+interface DomToSourcePluginOptions {
+  include?: string | RegExp | Array<string | RegExp>
+  exclude?: string | RegExp | Array<string | RegExp>
+  attributeName?: `data-${string}`
+  prefix?: string
+}
+```
+
+```ts
+reactVitePlugin({
+  include: ['src/**/*.{jsx,tsx}'],
+  exclude: /generated/,
+  attributeName: 'data-origin',
+  prefix: 'my-app/',
+})
+```
+
+`attributeName` defaults to `data-source-location` and must be a lowercase kebab-case `data-*` name. `node_modules` and virtual modules are always excluded. A source element that already has the configured attribute is left unchanged.
+
+`prefix` is prepended literally to the root-relative source path. For example, `prefix: 'my-app/'` produces `my-app/src/App.tsx:12:5`. Include any desired separator in the prefix.
+
+## Development only
+
+Both plugins use `apply: 'serve'`. Production builds are never modified, avoiding production bundle overhead and disclosure of source paths. The transformation has no browser runtime.
+
+## License
+
+MIT

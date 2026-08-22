@@ -1,0 +1,22 @@
+{
+  "name": "@dom-source-lens/playground-vue",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "node -e \"require('vue-tsc').run(require.resolve('typescript/lib/tsc'))\"",
+    "build": "npm run typecheck && vite build"
+  },
+  "dependencies": {
+    "dom-source-lens": "file:../..",
+    "vue": "^3.5.41",
+    "vue-router": "^5.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "typescript": "~6.0.3",
+    "vite": "^8.2.2",
+    "vue-tsc": "^3.1.2"
+  }
+}
