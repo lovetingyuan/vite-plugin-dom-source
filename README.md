@@ -1,5 +1,8 @@
 # vite-plugin-dom-source
 
+![Vibe Coding](https://img.shields.io/badge/vibe-coding-ff69b4)
+[![npm version](https://img.shields.io/npm/v/vite-plugin-dom-source.svg)](https://www.npmjs.com/package/vite-plugin-dom-source)
+
 Vite plugins that add a source location to rendered React and Vue 3 DOM elements during development.
 
 ```html
