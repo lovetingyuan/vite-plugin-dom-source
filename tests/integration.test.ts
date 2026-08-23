@@ -59,7 +59,7 @@ describe('Vite integration', () => {
   it('reads React locations before other pre transforms rewrite JSX', async () => {
     const root = path.join(fixtures, 'react')
     const rewriteBeforeLens: Plugin = {
-      name: 'rewrite-before-dom-source-lens',
+      name: 'rewrite-before-vite-plugin-dom-source',
       enforce: 'pre',
       transform(code, id) {
         if (!id.endsWith('/App.tsx')) return

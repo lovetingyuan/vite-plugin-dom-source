@@ -21,7 +21,7 @@ function inspectSource(event: MouseEvent) {
     <p class="eyebrow">Vue + Vite</p>
     <h1>DOM 对应哪一行源码？</h1>
     <p class="intro">
-      dom-source-lens 会在开发模式中给原生 DOM 元素添加源码位置。
+      vite-plugin-dom-source 会在开发模式中给原生 DOM 元素添加源码位置。
     </p>
 
     <nav aria-label="示例页面">

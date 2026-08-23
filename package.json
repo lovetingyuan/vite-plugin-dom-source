@@ -1,5 +1,5 @@
 {
-  "name": "dom-source-lens",
+  "name": "vite-plugin-dom-source",
   "version": "1.0.1",
   "description": "Vite plugins that map rendered React and Vue DOM elements back to their source locations.",
   "keywords": [
@@ -36,9 +36,9 @@
   },
   "scripts": {
     "build": "tsdown",
-    "build:playground": "npm run build && npm run build --workspace @dom-source-lens/playground-react && npm run build --workspace @dom-source-lens/playground-vue",
-    "dev:react": "npm run build && npm run dev --workspace @dom-source-lens/playground-react",
-    "dev:vue": "npm run build && npm run dev --workspace @dom-source-lens/playground-vue",
+    "build:playground": "npm run build && npm run build --workspace @vite-plugin-dom-source/playground-react && npm run build --workspace @vite-plugin-dom-source/playground-vue",
+    "dev:react": "npm run build && npm run dev --workspace @vite-plugin-dom-source/playground-react",
+    "dev:vue": "npm run build && npm run dev --workspace @vite-plugin-dom-source/playground-vue",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

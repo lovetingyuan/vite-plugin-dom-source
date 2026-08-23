@@ -255,7 +255,7 @@ async function createVueVitePlugin(
   }
 
   return {
-    name: 'dom-source-lens:vue',
+    name: 'vite-plugin-dom-source:vue',
     enforce: 'pre',
     apply: 'serve',
     configResolved(config) {

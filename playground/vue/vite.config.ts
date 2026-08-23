@@ -1,5 +1,5 @@
 import vue from '@vitejs/plugin-vue'
-import { vueVitePlugin } from 'dom-source-lens'
+import { vueVitePlugin } from 'vite-plugin-dom-source'
 import { defineConfig } from 'vite'
 
 export default defineConfig({

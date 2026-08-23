@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react'
-import { reactVitePlugin } from 'dom-source-lens'
+import { reactVitePlugin } from 'vite-plugin-dom-source'
 import { defineConfig } from 'vite'
 
 export default defineConfig({

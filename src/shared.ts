@@ -48,7 +48,7 @@ export function resolvePluginOptions(
 
   if (!ATTRIBUTE_NAME_RE.test(attributeName)) {
     throw new TypeError(
-      `[dom-source-lens] "attributeName" must be a lowercase kebab-case data attribute, received ${JSON.stringify(attributeName)}.`,
+      `[vite-plugin-dom-source] "attributeName" must be a lowercase kebab-case data attribute, received ${JSON.stringify(attributeName)}.`,
     )
   }
 

@@ -36,7 +36,7 @@ export function createReactSourceLocationBabelPlugin(
   attributeName: `data-${string}`,
 ): (api: PluginAPI) => PluginObject {
   return (api) => ({
-    name: 'dom-source-lens-react-transform',
+    name: 'vite-plugin-dom-source-react-transform',
     visitor: {
       JSXOpeningElement(
         path: NodePath<JSXOpeningElement>,
@@ -118,7 +118,7 @@ async function createReactVitePlugin(
   // React Compiler) rewrite the file and replace its AST locations.
   return {
     ...babel,
-    name: 'dom-source-lens:react',
+    name: 'vite-plugin-dom-source:react',
     enforce: 'pre',
     apply: 'serve',
     transform:

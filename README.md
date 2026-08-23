@@ -1,4 +1,4 @@
-# dom-source-lens
+# vite-plugin-dom-source
 
 Vite plugins that add a source location to rendered React and Vue 3 DOM elements during development.
 
@@ -17,7 +17,7 @@ Locations are relative to the resolved Vite root, use `/` separators, and use on
 ## Install
 
 ```sh
-npm install --save-dev dom-source-lens
+npm install --save-dev vite-plugin-dom-source
 ```
 
 ## React
@@ -25,7 +25,7 @@ npm install --save-dev dom-source-lens
 ```ts
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import { reactVitePlugin } from 'dom-source-lens'
+import { reactVitePlugin } from 'vite-plugin-dom-source'
 
 export default defineConfig({
   plugins: [react(), reactVitePlugin()],
@@ -39,7 +39,7 @@ The React plugin annotates lowercase JSX intrinsic elements, including HTML, SVG
 ```ts
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
-import { vueVitePlugin } from 'dom-source-lens'
+import { vueVitePlugin } from 'vite-plugin-dom-source'
 
 export default defineConfig({
   plugins: [vue(), vueVitePlugin()],
@@ -53,7 +53,7 @@ Pug, Jade, other template preprocessors, and Vue JSX are intentionally not trans
 ## Playground
 
 This repository includes minimal React Router and Vue Router Vite apps under
-`playground/`. Both apps import `dom-source-lens` through the local npm workspace
+`playground/`. Both apps import `vite-plugin-dom-source` through the local npm workspace
 and display the source location of whichever rendered element you click, even
 as you navigate between pages.
 
