@@ -11,17 +11,32 @@ export interface DomToSourcePluginOptions {
   exclude?: FilterPattern
   attributeName?: `data-${string}`
   prefix?: string
+  generateSourcePath?: (
+    sourcePath: string,
+    line: number,
+    column: number,
+  ) => string
 }
 
 export interface ResolvedDomToSourceOptions {
   attributeName: `data-${string}`
   exclude: Array<string | RegExp>
   filter: (id: string) => boolean
+  generateSourcePath?: (
+    sourcePath: string,
+    line: number,
+    column: number,
+  ) => string
   include: Array<string | RegExp>
   prefix: string
 }
 
 export interface SourcePathState {
+  generateSourcePath?: (
+    sourcePath: string,
+    line: number,
+    column: number,
+  ) => string
   prefix: string
   root: string
   readonly pathCache: Map<string, string>
@@ -62,6 +77,9 @@ export function resolvePluginOptions(
     attributeName,
     exclude,
     filter: (id) => filter(cleanId(id)),
+    ...(options.generateSourcePath
+      ? { generateSourcePath: options.generateSourcePath }
+      : {}),
     include,
     prefix: options.prefix ?? '',
   }
@@ -102,7 +120,10 @@ export function sourceLocation(
   line: number,
   column: number,
 ): string {
-  return `${sourcePathFor(state, filename)}:${line}:${column}`
+  const sourcePath = sourcePathFor(state, filename)
+  return state.generateSourcePath
+    ? state.generateSourcePath(sourcePath, line, column)
+    : `${sourcePath}:${line}:${column}`
 }
 
 export function escapeHtmlAttribute(value: string): string {

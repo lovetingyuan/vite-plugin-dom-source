@@ -6,8 +6,14 @@ import { transformVueSource } from '../src/vue.js'
 function createRuntime(
   root: string,
   isCustomElement?: (tag: string) => boolean,
+  generateSourcePath?: (
+    sourcePath: string,
+    line: number,
+    column: number,
+  ) => string,
 ) {
   return {
+    ...(generateSourcePath ? { generateSourcePath } : {}),
     prefix: '',
     root,
     pathCache: new Map<string, string>(),
@@ -57,6 +63,50 @@ describe('Vue source location transform', () => {
 
     expect(result?.code).toContain(
       'data-source-location="src/External.html:1:1"',
+    )
+  })
+
+  it('uses and escapes a custom source location for SFC elements', async () => {
+    const root = path.resolve('project')
+    const filename = path.join(root, 'src', 'Custom.vue')
+    const result = await transformVueSource(
+      '<template>\n  <section />\n</template>',
+      {
+        attributeName: 'data-source-location',
+        compiler,
+        filename,
+        parseMode: 'sfc',
+        runtime: createRuntime(
+          root,
+          undefined,
+          (sourcePath, line, column) =>
+            `custom&"<${sourcePath}#L${line}C${column}`,
+        ),
+      },
+    )
+
+    expect(result?.code).toContain(
+      'data-source-location="custom&amp;&quot;&lt;src/Custom.vue#L2C3"',
+    )
+  })
+
+  it('uses a custom source location for external HTML templates', async () => {
+    const root = path.resolve('project')
+    const filename = path.join(root, 'src', 'External.html')
+    const result = await transformVueSource('<article>external</article>', {
+      attributeName: 'data-source-location',
+      compiler,
+      filename,
+      parseMode: 'html',
+      runtime: createRuntime(
+        root,
+        undefined,
+        (sourcePath, line, column) => `${sourcePath}#${line},${column}`,
+      ),
+    })
+
+    expect(result?.code).toContain(
+      'data-source-location="src/External.html#1,1"',
     )
   })
 

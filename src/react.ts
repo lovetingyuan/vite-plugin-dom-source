@@ -79,6 +79,9 @@ async function createReactVitePlugin(
     await Promise.all([import('@rolldown/plugin-babel')])
 
   const runtime: ReactRuntimeState = {
+    ...(options.generateSourcePath
+      ? { generateSourcePath: options.generateSourcePath }
+      : {}),
     prefix: options.prefix,
     root: process.cwd(),
     pathCache: new Map(),

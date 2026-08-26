@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   escapeHtmlAttribute,
   resolvePluginOptions,
@@ -52,6 +52,31 @@ describe('shared options and locations', () => {
     expect(sourceLocation(state, filename, 12, 5)).toBe(
       'my-app/src/App.tsx:12:5',
     )
+  })
+
+  it('uses a custom source location generator with the normalized path and position', () => {
+    const root = path.resolve('workspace')
+    const filename = path.join(root, 'src', 'App.tsx')
+    const generateSourcePath = vi.fn(
+      (sourcePath: string, line: number, column: number) =>
+        `custom://${sourcePath}?line=${line}&column=${column}`,
+    )
+    const state = {
+      generateSourcePath,
+      prefix: 'my-app/',
+      root,
+      pathCache: new Map<string, string>(),
+    }
+
+    expect(sourceLocation(state, filename, 12, 5)).toBe(
+      'custom://my-app/src/App.tsx?line=12&column=5',
+    )
+    expect(generateSourcePath).toHaveBeenCalledWith(
+      'my-app/src/App.tsx',
+      12,
+      5,
+    )
+    expect(state.pathCache.size).toBe(1)
   })
 
   it('escapes generated HTML attribute values', () => {

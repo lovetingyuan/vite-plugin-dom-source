@@ -248,6 +248,9 @@ async function createVueVitePlugin(
 ): Promise<Plugin> {
   const compiler = await import('@vue/compiler-dom')
   const runtime: VueRuntimeState = {
+    ...(options.generateSourcePath
+      ? { generateSourcePath: options.generateSourcePath }
+      : {}),
     prefix: options.prefix,
     root: process.cwd(),
     pathCache: new Map(),

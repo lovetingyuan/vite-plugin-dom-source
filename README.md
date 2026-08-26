@@ -81,6 +81,11 @@ interface DomToSourcePluginOptions {
   exclude?: string | RegExp | Array<string | RegExp>
   attributeName?: `data-${string}`
   prefix?: string
+  generateSourcePath?: (
+    sourcePath: string,
+    line: number,
+    column: number,
+  ) => string
 }
 ```
 
@@ -90,12 +95,16 @@ reactVitePlugin({
   exclude: /generated/,
   attributeName: 'data-origin',
   prefix: 'my-app/',
+  generateSourcePath: (sourcePath, line, column) =>
+    `${sourcePath}#L${line}C${column}`,
 })
 ```
 
 `attributeName` defaults to `data-source-location` and must be a lowercase kebab-case `data-*` name. `node_modules` and virtual modules are always excluded. A source element that already has the configured attribute is left unchanged.
 
 `prefix` is prepended literally to the root-relative source path. For example, `prefix: 'my-app/'` produces `my-app/src/App.tsx:12:5`. Include any desired separator in the prefix.
+
+`generateSourcePath` customizes the complete source location value. It receives the normalized, root-relative source path after `prefix` has been applied, followed by one-based line and column numbers. Its return value is injected directly instead of the default `path:line:column` format. The callback is synchronous and should be a pure function.
 
 ## Development only
 

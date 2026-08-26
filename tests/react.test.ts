@@ -7,6 +7,11 @@ async function transformReact(
   code: string,
   filename = path.resolve('project/src/App.tsx'),
   attributeName: `data-${string}` = 'data-source-location',
+  generateSourcePath?: (
+    sourcePath: string,
+    line: number,
+    column: number,
+  ) => string,
 ): Promise<string> {
   const root = path.resolve('project')
   const result = await transformAsync(code, {
@@ -17,7 +22,12 @@ async function transformReact(
     sourceMaps: true,
     plugins: [
       createReactSourceLocationBabelPlugin(
-        { prefix: '', root, pathCache: new Map() },
+        {
+          ...(generateSourcePath ? { generateSourcePath } : {}),
+          prefix: '',
+          root,
+          pathCache: new Map(),
+        },
         attributeName,
       ),
     ],
@@ -71,5 +81,18 @@ describe('React source location transform', () => {
     const output = await transformReact('const view = <aside />', filename)
 
     expect(output).toContain('data-source-location="features/Panel.tsx:1:14"')
+  })
+
+  it('uses a custom source location generator', async () => {
+    const output = await transformReact(
+      'const view = <aside />',
+      path.resolve('project/src/Panel.tsx'),
+      'data-source-location',
+      (sourcePath, line, column) => `${sourcePath}#L${line}C${column}`,
+    )
+
+    expect(output).toContain(
+      'data-source-location="src/Panel.tsx#L1C14"',
+    )
   })
 })
