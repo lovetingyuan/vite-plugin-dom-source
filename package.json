@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-dom-source",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Vite plugins that map rendered React and Vue DOM elements back to their source locations.",
   "homepage": "https://github.com/lovetingyuan/vite-plugin-dom-source#readme",
   "repository": {
